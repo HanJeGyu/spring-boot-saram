@@ -1,35 +1,35 @@
 // 함수식, IIFE 패턴, 모듈패턴, var a = (함수{})();
 // 외부함수, 내부함수가 동등  app가 init 을 인식할 수 없음
-var app = (function(){   // 외부(함수호출)는 public?  , outter, 전역 함수 var
-    var wrapper = document.querySelector('#wrapper');  // 컴포넌트 객체?, dom객체?
-    let init=function(){    // 내부(함수식)는 private(클로저 안하면)?, inner,  지역 함수 let
+var app = (function(){   // 외부(함수호출)는 public?  , outter, 전역 변수 var
+    let wrapper = document.querySelector('#wrapper');  // DOM객체
+    let init=function(){    // 내부(함수식)는 private(클로저 안하면)?, inner,  지역 변수 let
         login_form();
     }
     let login_form = function(){
         wrapper.innerHTML = '<form action="/action_page.php">'
         +'  First name:<br>'
-        +'  <input type="text" name="firstname" value="Mickey">'
+        +'  <input type="text" name="firstname" value="">'
         +'  <br>'
         +'  Last name:<br>'
-        +'  <input type="text" name="lastname" value="Mouse">'
+        +'  <input type="text" name="lastname" value="">'
         +'  <br><br>'
-        +'  <input type="submit" id="login" value="로그인">'
-        +'  <input type="submit" id="join" value="회원가입">'
+        +'  <input type="button" id="login_btn" value="로그인">'
+        +'  <input type="button" id="join_btn" value="회원가입">'
         +'</form>';
 
-        var login = document.querySelector('#login'); 
-        var join = document.querySelector('#join'); 
-        login.addEventListener('click',function(){
+        let login_btn = document.querySelector('#login_btn'); 
+        let join_btn = document.querySelector('#join_btn'); 
+        login_btn.addEventListener('click',function(){
             alert("로그인에 실패했습니다.");
             login_form();
         });
-        join.addEventListener('click',function(){
+        join_btn.addEventListener('click',function(){
             join_form();
         });
     };
 
     let join_form = function(){
-        var wrapper = document.querySelector('#wrapper');  // 컴포넌트 객체?, dom객체?
+        let wrapper = document.querySelector('#wrapper');  // dom객체?
         wrapper.innerHTML = '<form action="/action_page.php">'
         +'  아이디:'
         +'  <input type="text" name="firstname" value="">'
@@ -40,23 +40,23 @@ var app = (function(){   // 외부(함수호출)는 public?  , outter, 전역 �
         +'  이름:'
         +'  <input type="text" name="lastname" value="">'
         +'  <br>'
-        +'  ssm?:'
+        +'  주민번호:'
         +'  <input type="text" name="lastname" value="">'
         +'  <br>'
         +'  휴대폰번호:'
         +'  <input type="text" name="lastname" value="">'
         +'  <br><br>'
-        +'  <input type="submit" id="join_y" value="확인">'
-        +'  <input type="submit" id="join_n" value="취소">'
+        +'  <input type="button" id="join_ck_btn" value="확인">'
+        +'  <input type="button" id="join_cal_btn" value="취소">'
         +'</form>';
 
-        var join_y = document.querySelector('#join_y'); 
-        var join_n = document.querySelector('#join_n'); 
-        join_y.addEventListener('click',function(){
+        var join_ck_btn = document.querySelector('#join_ck_btn'); 
+        var join_cal_btn = document.querySelector('#join_cal_btn'); 
+        join_ck_btn.addEventListener('click',function(){
             alert("회원가입 성공");
             login_form();
         });
-        join_n.addEventListener('click',function(){
+        join_cal_btn.addEventListener('click',function(){
             alert("회원가입 취소");
             login_form();
         });
