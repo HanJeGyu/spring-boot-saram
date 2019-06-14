@@ -20,12 +20,27 @@ var app = (()=>{   // 외부(함수호출)는 public?  , outter, 전역 변수 v
         let login_btn = document.querySelector('#login_btn'); 
         let join_btn = document.querySelector('#join_btn'); 
         login_btn.addEventListener('click',()=>{
-            alert("로그인에 실패했습니다.");
-            login_form();
+            alert("로그인 버튼");
+            count();
+            //login_form();
         });
         join_btn.addEventListener('click',()=>{
             join_form();
         });
+    };
+
+    let count = () =>{
+        let xhr = new XMLHttpRequest();
+        method = 'GET';
+        url = 'count';
+        xhr.open(method, url, true);
+        xhr.onreadystatechange=()=> {
+            if(xhr.readyState===4 && xhr.status === 200){
+                alert('성공');
+                wrapper.innerHTML = '총 고객수 : <h1>' + xhr.responseText + '</h1>';
+            }
+        }
+        xhr.send();
     };
 
     let join_form = ()=>{
@@ -67,4 +82,5 @@ var app = (()=>{   // 외부(함수호출)는 public?  , outter, 전역 변수 v
     return {init : init};  
 })();   //  (); 마무리하면 즉시 실행
 
-// ES5var selected = allJobs.filter(function (job) {  return job.isSelected();});// ES6var selected = allJobs.filter(job => job.isSelected());
+// ES5var selected = allJobs.filter(function (job) {  return job.isSelected();});
+// ES6var selected = allJobs.filter(job => job.isSelected());

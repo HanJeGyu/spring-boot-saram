@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.saram.web.mapper.CategoryMapper">
+  <resultMap id="categoryMap" type="com.saram.web.mapper.CategoryMapper">
+    <id property="categoryId" column="CATEGORY_ID"/>
+    <result property="categoryName" column="CATEGORY_NAME"/>
+    <result property="description" column="DESCRIPTION"/>
+  </resultMap>
+  
+  <insert id="insertCategory" parameterType="com.saram.web.domain.CategoryDTO">
+    INSERT INTO CATEGORIES (CATEGORY_ID, CATEGORY_NAME, DESCRIPTION)
+    VALUSE (#{categoryId}, #{categoryName}, #{description} )
+  </insert>
+
+  <select id="selectCategories" resultMap="categoryMap">
+    SELECT * FROM CATEGORIES
+  </select>
+
+  <select id="selectCategoriesByOption" resultMap="categoryMap" 
+                                        parameterType="com.saram.web.domain.CategoryDTO">
+    SELECT * FROM CATEGORIES where CATEGORY_NAME = #{categoryName}
+  </select>
+
+  <select id="selectCategoryByCategoryId" resultMap="categoryMap"
+                                          parameterType="string">
+    SELECT * FROM CATEGORIES where CATEGORY_ID = #{value}
+  </select>
+
+  <update id="updateCategory" parameterType="com.saram.web.domain.CategoryDTO">
+    UPDATE CATEGORIES SET 
+      CATEGORY_NAME = #{categoryName},
+      DESCRIPTION = #{description}
+    WHERE CATEGORY_ID = #{categoryId}
+  </update>
+
+  <delete id="deleteCategory" parameterType="com.saram.web.domain.CategoryDTO">
+    DELETE FROM CATEGORIES WHERE CATEGORY_ID = #{categoryId}
+  </delete>
+</mapper>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.saram.web.mapper.OrderMapper">
+  <resultMap id="orderMap" type="com.saram.web.mapper.OrderMapper">
+    <id property="orderId" column="ORDER_ID"/>
+    <result property="customerId" column="CUSTOMER_ID"/>
+    <result property="employeeId" column="EMPLOYEE_ID"/>
+    <result property="orderDate" column="ORDER_DATE"/>
+    <result property="shipperId" column="SHIPPER_ID"/>
+  </resultMap>
+  
+  <insert id="insertOrder" parameterType="com.saram.web.domain.OrderDTO">
+    INSERT INTO ORDERS (ORDER_ID, CUSTOMER_ID, EMPLOYEE_ID, ORDER_DATE, SHIPPER_ID)
+    VALUSE (#{orderId}, #{customerId}, #{employeeId}, #{orderDate}, #{shipperId} )
+  </insert>
+
+  <select id="selectOrders" resultMap="orderMap">
+    SELECT * FROM ORDERS
+  </select>
+
+  <select id="selectOrdersByOption" resultMap="orderMap" 
+                                        parameterType="com.saram.web.domain.OrderDTO">
+    SELECT * FROM ORDERS where CUSTOMER_ID = #{customerId}
+  </select>
+
+  <select id="selectOrderByOrderId" resultMap="orderMap"
+                                          parameterType="String">
+    SELECT * FROM ORDERS where ORDER_ID = #{value}
+  </select>
+
+  <update id="updateOrder" parameterType="com.saram.web.domain.OrderDTO">
+    UPDATE ORDERS SET 
+      CUSTOMER_ID = #{customerId},
+      EMPLOYEE_ID = #{employeeId},
+      ORDER_DATE = #{orderDate}, 
+      SHIPPER_ID= #{shipperId}
+    WHERE ORDER_ID = #{orderId}
+  </update>
+
+  <delete id="deleteOrder" parameterType="com.saram.web.domain.OrderDTO">
+    DELETE FROM ORDERS WHERE ORDER_ID = #{orderId}
+  </delete>
+</mapper>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.saram.web.mapper.CustomerMapper">
+  <resultMap id="customerMap" type="com.saram.web.mapper.CustomerMapper">
+    <id property="customerId" column="CUSTOMER_ID"/>
+    <result property="customerName" column="CUSTOMER_NAME"/>
+    <result property="password" column="PASSWORD"/>
+    <result property="ssn" column="SSN"/>
+    <result property="phone" column="PHONE"/>
+    <result property="city" column="CITY"/>
+    <result property="address" column="ADDRESS"/>
+    <result property="postalcode" column="POSTALCODE"/>
+    <result property="photo" column="PHOTO"/>
+  </resultMap>
+  
+  <insert id="insertCustomer" parameterType="com.saram.web.domain.CustomerDTO">
+    INSERT INTO CUSTOMERS (CUSTOMER_ID, CUSTOMER_NAME, PASSWORD, SSN, PHONE, CITY, ADDRESS, POSTALCODE, PHOTO)
+    VALUSE (#{customerId}, #{customerName}, #{password}, #{ssn}, #{phone}, #{city}, #{address}, #{postalcode}, #{photo} )
+  </insert>
+
+  <select id="selectCustomers" resultMap="customerMap">
+    SELECT * FROM CUSTOMERS
+  </select>
+
+  <select id="selectCustomersByOption" resultMap="customerMap" 
+                                        parameterType="com.saram.web.domain.CustomerDTO">
+    SELECT * FROM CUSTOMERS where CUSTOMER_NAME = #{customerName}
+  </select>
+
+  <select id="selectCustomerByCustomerId" resultMap="customerMap"
+                                          parameterType="string">
+    SELECT * FROM CUSTOMERS where CUSTOMER_ID = #{value}
+  </select>
+
+  <select id="serlectCount" resultType="int">
+    SELECT COUNT(*) AS COUNT FROM CUSTOMERS
+  </select>
+
+  <update id="updateCustomer" parameterType="com.saram.web.domain.CustomerDTO">
+    UPDATE CUSTOMERS SET 
+      CUSTOMER_NAME = #{customerName},
+      PASSWORD = #{password},
+      SSN = #{ssn}, 
+      PHONE = #{phone}, 
+      CITY = #{city}, 
+      ADDRESS = #{address}, 
+      POSTALCODE = #{postalcode}, 
+      PHOTO = #{photo}
+    WHERE CUSTOMER_ID = #{customerId}
+  </update>
+
+  <delete id="deleteCustomer" parameterType="com.saram.web.domain.CustomerDTO">
+    DELETE FROM CUSTOMERS WHERE CUSTOMER_ID = #{customerId}
+  </delete>
+</mapper>
