@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.saram.web.mapper.SupplierMapper">
-  <resultMap id="supplierMap" type="com.saram.web.mapper.SupplierMapper">
+  <resultMap id="supplierMap" type="com.saram.web.domain.SupplierDTO">
     <id property="supplierId" column="SUPPLIER_ID"/>
     <result property="supplierName" column="SUPPLIER_NAME"/>
     <result property="contactName" column="CONTACT_NAME"/>

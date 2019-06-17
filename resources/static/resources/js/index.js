@@ -7,37 +7,44 @@ var app = (()=>{   // 외부(함수호출)는 public?  , outter, 전역 변수 v
     }
     let login_form = ()=>{
         wrapper.innerHTML = '<form action="/action_page.php">'
-        +'  First name:<br>'
-        +'  <input type="text" name="firstname" value="">'
-        +'  <br>'
-        +'  Last name:<br>'
-        +'  <input type="text" name="lastname" value="">'
-        +'  <br><br>'
-        +'  <input type="button" id="login_btn" value="로그인">'
-        +'  <input type="button" id="join_btn" value="회원가입">'
-        +'</form>';
+        + '아이디 :<br>'
+        + '<input type="text" id="customerId" name="customerId">'
+        + '<br>'
+        + '비밀번호:<br>'
+        + '<input type="text" id="password" name="password">'
+        + '<br><br>'
+        + '<input type="button" id="login_btn" value="로그인">'
+        + '<input type="button" id="join_btn" value="회원가입">'
+        + '</form>';
 
         let login_btn = document.querySelector('#login_btn'); 
         let join_btn = document.querySelector('#join_btn'); 
-        login_btn.addEventListener('click',()=>{
+        login_btn.addEventListener('click',(e)=>{
+            e.preventDefault();
             alert("로그인 버튼");
-            count();
-            //login_form();
+            login();
         });
         join_btn.addEventListener('click',()=>{
             join_form();
         });
     };
 
-    let count = () =>{
-        let xhr = new XMLHttpRequest();
-        method = 'GET';
-        url = 'count';
+    let login = () =>{
+        id = document.getElementById('customerId').value;
+        pass = document.getElementById('password').value;
+        let xhr = new XMLHttpRequest(),
+            method = 'GET',
+            url = 'login/'+id+'/'+pass;
         xhr.open(method, url, true);
-        xhr.onreadystatechange=()=> {
+        xhr.onreadystatechange=()=>{
             if(xhr.readyState===4 && xhr.status === 200){
-                alert('성공');
-                wrapper.innerHTML = '총 고객수 : <h1>' + xhr.responseText + '</h1>';
+                let d = xhr.responseText
+                if(d==='SUCCESS'){
+                    wrapper.innerHTML = '<h1>마이페이지</h1>'
+                }else{
+                    alert("로그인 실패");
+                    login_form();
+                }
             }
         }
         xhr.send();
@@ -52,15 +59,21 @@ var app = (()=>{   // 외부(함수호출)는 public?  , outter, 전역 변수 v
         +'  비밀번호:'
         +'  <input type="text" name="lastname" value="">'
         +'  <br>'
-        +'  이름:'
+        +'  비밀번호 확인:'
         +'  <input type="text" name="lastname" value="">'
         +'  <br>'
-        +'  주민번호:'
+        +'  주민등록번호:'
         +'  <input type="text" name="lastname" value="">'
         +'  <br>'
         +'  휴대폰번호:'
         +'  <input type="text" name="lastname" value="">'
+        +'  <br>'
+        +'  거주지:'
+        +'  <input type="text" name="lastname" value="">'
         +'  <br><br>'
+        +'  주소:'
+        +'  <input type="text" name="lastname" value="">'
+        +'  <br>'
         +'  <input type="button" id="join_ck_btn" value="확인">'
         +'  <input type="button" id="join_cal_btn" value="취소">'
         +'</form>';
@@ -77,6 +90,20 @@ var app = (()=>{   // 외부(함수호출)는 public?  , outter, 전역 변수 v
         });
     };
 
+    let count = () =>{
+        let xhr = new XMLHttpRequest();
+        method = 'GET';
+        url = 'count';
+        xhr.open(method, url, true);
+        xhr.onreadystatechange=()=> {
+            if(xhr.readyState===4 && xhr.status === 200){
+                alert('성공');
+                wrapper.innerHTML = '총 고객수 : <h1>' + xhr.responseText + '</h1>';
+            }
+        }
+        xhr.send();
+    };
+    
     // 클로저 - 외부함수(app)가 내부함수(init)를 인식 할 수 있음,  {할당될이름 : 내부함수명}
     // json(제이슨)  {string:value},  app 는 제이슨이 (리턴이 제이슨)
     return {init : init};  

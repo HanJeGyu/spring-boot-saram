@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.saram.web.mapper.CustomerMapper">
-  <resultMap id="customerMap" type="com.saram.web.mapper.CustomerMapper">
+  <resultMap id="customerMap" type="com.saram.web.domain.CustomerDTO">
     <id property="customerId" column="CUSTOMER_ID"/>
     <result property="customerName" column="CUSTOMER_NAME"/>
     <result property="password" column="PASSWORD"/>
@@ -23,7 +23,7 @@
   </select>
 
   <select id="selectCustomersByOption" resultMap="customerMap" 
-                                        parameterType="com.saram.web.domain.CustomerDTO">
+                                       parameterType="com.saram.web.domain.CustomerDTO">
     SELECT * FROM CUSTOMERS where CUSTOMER_NAME = #{customerName}
   </select>
 
@@ -32,7 +32,12 @@
     SELECT * FROM CUSTOMERS where CUSTOMER_ID = #{value}
   </select>
 
-  <select id="serlectCount" resultType="int">
+  <select id="login" resultMap="customerMap"
+                     parameterType="com.saram.web.domain.CustomerDTO">
+   select * from CUSTOMERS where CUSTOMER_ID Like #{customerId} and PASSWORD LIKE #{password}
+ </select>
+
+  <select id="selectCount" resultType="int">
     SELECT COUNT(*) AS COUNT FROM CUSTOMERS
   </select>
 

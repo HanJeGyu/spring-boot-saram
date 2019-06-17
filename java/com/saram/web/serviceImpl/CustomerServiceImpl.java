@@ -51,4 +51,11 @@ public class CustomerServiceImpl implements CustomerService {
         return customerMapper.selectCount();
     }
 
+    @Override
+    public CustomerDTO login(CustomerDTO customer) {
+        System.out.println("아이디 : "+ customer.getCustomerId());
+        System.out.println("비밀번호 : "+ customer.getPassword());
+        return customerMapper.login(customer);
+    }
+
 }

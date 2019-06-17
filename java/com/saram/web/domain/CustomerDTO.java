@@ -12,5 +12,6 @@ import lombok.Data;
 @Component  // 타입을 정의?
 @Lazy       // 설거지?
 public class CustomerDTO {
-    private String customerId, customerName, password, ssn, phone, address, postalcode, photo;
+    private String customerId, customerName, password, ssn, phone, city, address, postalcode, photo;
+
 }
