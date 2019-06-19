@@ -15,7 +15,7 @@
   
   <insert id="insertCustomer" parameterType="com.saram.web.domain.CustomerDTO">
     INSERT INTO CUSTOMERS (CUSTOMER_ID, CUSTOMER_NAME, PASSWORD, SSN, PHONE, CITY, ADDRESS, POSTALCODE, PHOTO)
-    VALUSE (#{customerId}, #{customerName}, #{password}, #{ssn}, #{phone}, #{city}, #{address}, #{postalcode}, #{photo} )
+    VALUES (#{customerId}, #{customerName}, #{password}, #{ssn}, #{phone}, #{city}, #{address}, #{postalcode}, #{photo} )
   </insert>
 
   <select id="selectCustomers" resultMap="customerMap">
