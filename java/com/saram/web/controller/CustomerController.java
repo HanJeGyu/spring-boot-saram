@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import com.saram.web.common.util.PageProxy;
+import com.saram.web.common.util.Printer;
 import com.saram.web.domain.CustomerDTO;
 import com.saram.web.service.CustomerService;
 
@@ -26,17 +28,14 @@ public class CustomerController {
     
     @Autowired CustomerService customerService;
     @Autowired CustomerDTO customer;
+    @Autowired PageProxy pxy;
+    @Autowired Printer p;
     
     @PostMapping("")
     // public @ResponseBody(생략됨) CustomerDTO login(@PathVariable("customerId")String id, @PathVariable("password")String pass){
     // HashMap JSON과 호환
     public HashMap<String, Object> join(@RequestBody CustomerDTO param){
-        System.out.println(param.getCustomerId());
-        System.out.println(param.getPassword());
-        System.out.println(param.getCustomerName());
-
         customerService.addCustomer(param);
-
         HashMap<String, Object> map = new HashMap<>();
         map.put("result", "SUCCESS");
         return map;
@@ -46,17 +45,23 @@ public class CustomerController {
     public String count() {
         System.out.println("customerController.count()");
         int count = customerService.countAll();
+        p.accept("람다 고객수 : " + count);
         System.out.println("고객수 : " + count);
         return count + "";
     }
 
-    @GetMapping("")
-    public String customerList(){
-        List<CustomerDTO> list = new ArrayList<>();
-        list = customerService.findCustomers();
-        for(CustomerDTO a : list)
-            System.out.println(a.getCustomerId());
-        return "";
+    @GetMapping("/page/{pageNum}")
+    public HashMap<String, Object> customerList(@PathVariable String pageNum){
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("totalCount",customerService.countAll());
+        map.put("page_num", pageNum);
+        map.put("page_size", "5");
+        map.put("block_size", "5");
+        pxy.execute(map);
+
+        map.put("list", customerService.findCustomers(pxy));
+        map.put("pxy", pxy);
+        return map;
     }
 
     @GetMapping("/{customerId}/{password}")
@@ -74,8 +79,6 @@ public class CustomerController {
 
     @PutMapping("/{customerId}")
     public CustomerDTO modify(@RequestBody CustomerDTO param) {
-        System.out.println(param.getCustomerId());
-        System.out.println(param.getCustomerName());
         customerService.updateCustomer(param);
         //HashMap<String, Object> map = new HashMap<>();
         //map.put("result", "SUCCESS");
@@ -84,7 +87,6 @@ public class CustomerController {
 
     @DeleteMapping("/{customerId}")
     public HashMap<String, Object> delete(@RequestBody CustomerDTO param) {
-        System.out.println("ID"+param.getCustomerId());
         customerService.deleteCustomer(param);
         HashMap<String, Object> map = new HashMap<>();
         map.put("result", "SUCCESS");

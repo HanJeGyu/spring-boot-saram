@@ -24,6 +24,7 @@ var customer = {
 var employee = {
     login : login,
     admin_login : admin_login,
+    customer_list_form : customer_list_form,
     customer_list : customer_list
 }
 var session = {
@@ -117,7 +118,7 @@ function login(x){
                     session.set_value({'name':'userId', 'value' : d.customerId});
                     customer.myPage(d);
                 }else{
-                    employee.customer_list();
+                    employee.customer_list('1');
                 }
             }else{
                 alert('로그인 실패');
@@ -133,7 +134,7 @@ function admin_login(){
     if(isAdmin){
         let pass = prompt('관리자 번호를 입력하세요');
         if(pass == 1000){
-            employee.customer_list();
+            employee.customer_list('1');
         }else{
             alert('입력한 번호가 일치하지 않습니다.');
         }
@@ -142,13 +143,77 @@ function admin_login(){
     }
 }
 
-function customer_list(){
+function create_customer_row(x){
+    return '<tr><td>'+x.customerId+'</td>'
+    + '<td>'+x.customerName+'</td>'
+    + '<td>'+x.ssn+'</td>'
+    + '<td>'+x.phone+'</td>'
+    + '<td>'+x.city+'</td></tr>';
+}
+
+function customer_list(x){
     let xhr = new XMLHttpRequest();              // new 메모리 할당
-    xhr.open('GET', 'customers', true); // open 속성부여, 속성의 추가는 메소드로
+    xhr.open('GET', 'customers/page/'+x, true); // open 속성부여, 속성의 추가는 메소드로
     xhr.onload=()=>{     // callback함수, listener,             onload 기능 구현, 기능의 추가는 속성으로
         if(xhr.readyState===4 && xhr.status === 200){
-            alert('리스트 연결 성공');
-            //let d = JSON.parse(xhr.responseText);
+            //alert('리스트 연결 성공');
+            let d = JSON.parse(xhr.responseText);
+            $wrapper.innerHTML = employee.customer_list_form();
+            let tbody = document.getElementById('tbody');
+            let i = 0;
+            d.list.forEach((v, i)=>{
+                tbody.innerHTML += create_customer_row(v);
+            });
+            
+            let blocks = document.createElement('div');
+            blocks.setAttribute('id', 'blocks');
+            wrapper.appendChild(blocks);
+            let spans = document.createElement('div');
+            i = 1;
+            for(;i<6;i++){
+                let span = document.createElement('span');
+                span.setAttribute('style', 'display:inline-block;padding-right:20px;border: 1px solid black;cursor:pointer');
+                span.setAttribute('class', 'page-num');
+                span.innerHTML = i;
+                if(x==span.innerHTML){
+                    span.style.backgroundColor = 'red';
+                };
+                spans.appendChild(span);
+            }
+            blocks.appendChild(spans);
+            let clss = document.getElementsByClassName('page-num');
+            let j = 0;
+            for(;j<clss.length;j++){
+                (function(j){
+                    clss[j].addEventListener('click',function(){
+                        customer_list(this.innerText)
+                    })
+                })(j)
+            }
+
+            if(d.pxy.existPrev){
+                let prevBlock = document.createElement('span');
+                prevBlock.setAttribute('style','display:inline-block;padding-right:20px;border: 1px solid black;');
+                prevBlock.textContent="<";
+                blocks.prepend(prevBlock);
+            }
+     
+            if(d.pxy.existNext){
+                let nextBlock = document.createElement('span');
+                nextBlock.setAttribute('style','display:inline-block;padding-right:20px;border: 1px solid black;');
+                nextBlock.textContent=">";
+                blocks.appendChild(nextBlock);
+            }
+            /* if(existPrev){
+                let prevBlock = document.createElement('span');
+                spans.setAttribute('style="display:inline-block;padding-right:20px;border: 1px solid black;cursor:pointer');
+                blocks.prepend(prevBlock);
+            }
+            if(existNext){
+                let nextBlock = document.createElement('span');
+                spans.setAttribute('style="display:inline-block;padding-right:20px;border: 1px solid black;cursor:pointer');
+                blocks.appendChild(nextBlock);
+            } */
         }
     }
     xhr.send(); // send 실행
@@ -352,4 +417,20 @@ function modify_form(x){
 function search(){
     return '<form action="/action_page.php">'
     +'</form>';
+}
+
+function customer_list_form(){  
+//customerId, customerName, ssn, phone, city
+    return '<h2>고객목록</h2>'
+    +''
+    +'<table>'
+    +'  <tr id="custome-table">'
+    +'    <th>아이디</th>'
+    +'    <th>고객명</th>'
+    +'    <th>주민번호</th>'
+    +'    <th>휴대폰번호</th>'
+    +'    <th>도시</th>'
+    +'  </tr>'
+    +'  <tbody id="tbody"></tbody>'
+    +'</table>';
 }

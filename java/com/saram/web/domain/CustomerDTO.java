@@ -13,5 +13,5 @@ import lombok.Data;
 @Lazy       // 설거지?
 public class CustomerDTO {
     private String customerId, customerName, password, ssn, phone, city, address, postalcode, photo;
-
+    
 }

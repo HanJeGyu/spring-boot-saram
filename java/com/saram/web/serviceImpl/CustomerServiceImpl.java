@@ -2,6 +2,7 @@ package com.saram.web.serviceImpl;
 
 import java.util.List;
 
+import com.saram.web.common.util.PageProxy;
 import com.saram.web.domain.CustomerDTO;
 import com.saram.web.mapper.CustomerMapper;
 import com.saram.web.service.CustomerService;
@@ -22,8 +23,8 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public List<CustomerDTO> findCustomers() {
-        return customerMapper.selectCustomers();
+    public List<CustomerDTO> findCustomers(PageProxy pxy) {
+        return customerMapper.selectCustomers(pxy);
     }
 
     @Override

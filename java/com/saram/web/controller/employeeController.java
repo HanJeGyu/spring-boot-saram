@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/employees")
-public class employeeController {
+public class EmployeeController {
 
     @Autowired EmployeeService employeeService;
     @Autowired EmployeeDTO employee;
